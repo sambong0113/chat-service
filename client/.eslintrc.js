@@ -1,11 +1,17 @@
 module.exports = {
-  parser: "babel-eslint",
+  parser: 'babel-eslint',
   parserOptions: {
-    sourceType: "module",
+    ecmaVersion: 2016,
+    sourceType: 'module',
   },
   env: { browser: true, es6: true, node: true },
-  extends: ['eslint:recomended', 'airbnb', 'plugin:prettier/recommended'],
+  extends: [
+    'eslint:recommended',
+    'airbnb',
+    'plugin:prettier/recommended',
+    'plugin:react/recommended',
+  ],
   rules: {
-    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx']}]
-  }
+    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+  },
 };
