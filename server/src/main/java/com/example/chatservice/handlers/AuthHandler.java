@@ -1,4 +1,4 @@
-package com.example.chatservice;
+package com.example.chatservice.handlers;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -8,10 +8,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Component
-public class GreetingHandler {
-    public Mono<ServerResponse> hello(ServerRequest request) {
+public class AuthHandler {
+    public Mono<ServerResponse> login(ServerRequest request) {
         return ServerResponse.ok().contentType(MediaType.TEXT_PLAIN)
-                .body(BodyInserters.fromValue("Hello, Spring!"));
+                .body(BodyInserters.fromValue("Hello World!"));
     }
-
 }

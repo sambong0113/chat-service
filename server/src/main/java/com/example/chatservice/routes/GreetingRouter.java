@@ -1,5 +1,6 @@
-package com.example.chatservice;
+package com.example.chatservice.routes;
 
+import com.example.chatservice.handlers.GreetingHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
