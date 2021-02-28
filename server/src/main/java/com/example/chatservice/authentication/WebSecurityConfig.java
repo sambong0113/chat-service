@@ -8,7 +8,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
@@ -24,6 +28,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
+                .cors().configurationSource(request -> {
+                    CorsConfiguration corsConfig = new CorsConfiguration();
+                    corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+                    corsConfig.addAllowedMethod("*");
+                    corsConfig.addAllowedHeader("*");
+                    return corsConfig;
+                }).and()
                 .exceptionHandling()
                 .authenticationEntryPoint((swe, e) -> {
                     return Mono.fromRunnable(() -> {
@@ -41,7 +52,7 @@ public class WebSecurityConfig {
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                .pathMatchers("/login").permitAll()
+                .pathMatchers("/api/login").permitAll()
                 .pathMatchers("/hello").permitAll()
                 .anyExchange().authenticated()
                 .and().build();

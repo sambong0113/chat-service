@@ -8,9 +8,6 @@ public class ChatServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChatServiceApplication.class, args);
-
-		GreetingWebClient gwc = new GreetingWebClient();
-		System.out.println(gwc.getResult());
 	}
 
 }

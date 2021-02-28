@@ -5,7 +5,6 @@ import com.example.chatservice.UserService;
 import com.example.chatservice.authentication.AuthResponse;
 import com.example.chatservice.authentication.JWTUtil;
 import com.example.chatservice.authentication.PBKDF2Encoder;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,15 +29,13 @@ public class AuthHandler {
     public Mono<ServerResponse> login(ServerRequest request) {
         return request
                 .bodyToMono(User.class)
-                .flatMap(user -> {
-                    return userService.findByUsername(user.getUsername()).flatMap(userDetails -> {
-                        if (passwordEncoder.encode(user.getPassword()).equals(userDetails.getPassword())) {
-                            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                                    .body(BodyInserters.fromValue(new AuthResponse((jwtUtil.generateToken(userDetails)))));
-                        }
-                        System.out.println("failure");
-                        return ServerResponse.status(HttpStatus.UNAUTHORIZED).build();
-                    });
-                });
+                .flatMap(user -> userService.findByUsername(user.getUsername()).flatMap(userDetails -> {
+                    if (passwordEncoder.encode(user.getPassword()).equals(userDetails.getPassword())) {
+                        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+                                .body(BodyInserters.fromValue(new AuthResponse(true, jwtUtil.generateToken(userDetails))));
+                    }
+                    return Mono.empty();
+                })).switchIfEmpty(ServerResponse.status(HttpStatus.UNAUTHORIZED).contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromValue(new AuthResponse(false, null))));
     }
 }

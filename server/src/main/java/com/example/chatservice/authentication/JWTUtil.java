@@ -49,6 +49,7 @@ public class JWTUtil {
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRoles());
+        claims.put("username", user.getUsername());
         return doGenerateToken(claims, user.getUsername());
     }
 
@@ -60,7 +61,6 @@ public class JWTUtil {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(username)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(key)
