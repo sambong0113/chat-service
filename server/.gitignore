@@ -41,3 +41,4 @@ transaction-logs
 secrets.yml
 .gradletasknamecache
 .ksts4-cache
+application.properties
