@@ -3,6 +3,7 @@ package com.example.chatservice.handlers;
 import com.example.chatservice.User;
 import com.example.chatservice.UserService;
 import com.example.chatservice.authentication.AuthResponse;
+import com.example.chatservice.authentication.AuthenticationManager;
 import com.example.chatservice.authentication.JWTUtil;
 import com.example.chatservice.authentication.PBKDF2Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class AuthHandler {
         return request
                 .bodyToMono(User.class)
                 .flatMap(user -> userService.findByUsername(user.getUsername()).flatMap(userDetails -> {
-                    if (passwordEncoder.encode(user.getPassword()).equals(userDetails.getPassword())) {
+                    if (passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
                         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                                 .body(BodyInserters.fromValue(new AuthResponse(true, jwtUtil.generateToken(userDetails))));
                     }
