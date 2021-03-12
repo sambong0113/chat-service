@@ -11,4 +11,7 @@ public interface UserRepository extends ReactiveCrudRepository<User, String> {
 
     @Query("Select * FROM User WHERE username = :username")
     Mono<User> findByUsername(String username);
+
+    @Query("Insert Into User Values(\':user.username\', \':user.password', \':user.nickname\')")
+    Mono<User> createUser(User user);
 }

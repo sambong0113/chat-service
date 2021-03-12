@@ -17,6 +17,9 @@ public class AuthRouter {
     public RouterFunction<ServerResponse> authRoute(AuthHandler authHandler) {
         return RouterFunctions
                 .route(
+                        RequestPredicates.POST("/api/signup").and(accept(MediaType.APPLICATION_JSON)),
+                        authHandler::signUp
+                ).andRoute(
                         RequestPredicates.POST("/api/login").and(accept(MediaType.APPLICATION_JSON)),
                         authHandler::login
                 );
